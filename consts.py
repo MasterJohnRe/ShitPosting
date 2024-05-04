@@ -15,3 +15,11 @@ KEY_TO_FIND_TOP_STORY_END_OF_BODY = '</div>'
 KEY_TO_FIND_TOP_STORY_TITLE_HTML_TAG = f'slot="title"'
 KEY_TO_FIND_TOP_STORY_START_OF_TITLE = '>'
 KEY_TO_FIND_TOP_STORY_END_OF_TITLE = '<'
+
+
+
+POLLY_AUDIO_OUTPUT_FILE_PATH = "./media/polly_audio_output.mp3"
+# AWS credentials and region
+AWS_ACCESS_KEY_ID = 'AKIAWO5H2OD3OERIK3XM'
+AWS_SECRET_ACCESS_KEY = '3YvZ+2UoFjeFDFOgCEXiXbKYQY0ofs7OsAfdqjFX'
+AWS_REGION = 'us-west-2'  # Change this to your AWS region
