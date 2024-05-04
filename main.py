@@ -17,8 +17,7 @@ def get_top_story():
     return story_tuple
 
 
-def create_audio_file_from_text(story_tuple: Tuple[str, str]):
-    aws_adapter = AWSAdapter()
+def create_audio_file_from_text(aws_adapter, story_tuple: Tuple[str, str]):
     polly_output_audio_file_path = aws_adapter.create_audio_file_from_text(story_tuple[STORY_BODY_INDEX])
     return polly_output_audio_file_path
 
@@ -38,13 +37,21 @@ def get_random_video_from_bank():
         return None
 
 
+def create_video_with_subtitles(aws_adapter, polly_output_audio_file_path):
+    uploaded_file_uri = aws_adapter.upload_file(polly_output_audio_file_path)
+    aws_adapter.transcribe_audio(uploaded_file_uri)
+
+
 def main():
-    story_tuple = get_top_story()
-    output_audio_file_path = create_audio_file_from_text(story_tuple)
-    mp3_length = get_mp3_length(output_audio_file_path)
-    random_video_file_path = get_random_video_from_bank()
-    trimmed_video_file_path = trim_video_by_random_start_point(random_video_file_path, mp3_length)
-    merge_video(trimmed_video_file_path, output_audio_file_path)
+    aws_adapter = AWSAdapter()
+    # story_tuple = get_top_story()
+    # output_audio_file_path = create_audio_file_from_text(aws_adapter, story_tuple)
+    # mp3_length = get_mp3_length(output_audio_file_path)
+    # random_video_file_path = get_random_video_from_bank()
+    # trimmed_video_file_path = trim_video_by_random_start_point(random_video_file_path, mp3_length)
+    # merge_video(trimmed_video_file_path, output_audio_file_path)
+    # create_video_with_subtitles(aws_adapter, output_audio_file_path)
+    create_video_with_subtitles(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
     # print(trimmed_video_file_path)
 
 
