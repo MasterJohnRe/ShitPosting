@@ -21,7 +21,7 @@ class RedditAdapter:
         http_response_text = http_response_text[index:]
         story_body_start_index = http_response_text.find(KEY_TO_FIND_TOP_STORY_START_OF_BODY)
         story_body_end_index = http_response_text.find(KEY_TO_FIND_TOP_STORY_END_OF_BODY) - len(
-            KEY_TO_FIND_TOP_STORY_END_OF_BODY)
+            KEY_TO_FIND_TOP_STORY_END_OF_BODY) - REMOVE_LAST_UNWANTED_CHARACTER
         top_story_body_text = http_response_text[story_body_start_index:story_body_end_index].replace('<p>',
                                                                                                       '').replace(
             '</p>', '')

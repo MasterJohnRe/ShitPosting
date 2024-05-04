@@ -15,7 +15,7 @@ KEY_TO_FIND_TOP_STORY_END_OF_BODY = '</div>'
 KEY_TO_FIND_TOP_STORY_TITLE_HTML_TAG = f'slot="title"'
 KEY_TO_FIND_TOP_STORY_START_OF_TITLE = '>'
 KEY_TO_FIND_TOP_STORY_END_OF_TITLE = '<'
-
+REMOVE_LAST_UNWANTED_CHARACTER = 1
 
 
 POLLY_AUDIO_OUTPUT_FILE_PATH = "./media/polly_audio_output.mp3"
@@ -27,3 +27,4 @@ AWS_REGION = 'us-west-2'  # Change this to your AWS region
 
 TRIMMED_VIDEO_FILE_PATH = "./media/trimmed_video.mp4"
 BASE_VIDEOS_FOLDER_PATH = r"C:\Users\Amit\Downloads\videos" #TODO: edit this on production
+MERGED_CLIP_FILE_PATH = "./media/merged_clip_without_subtitles.mp4"

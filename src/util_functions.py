@@ -3,7 +3,7 @@ from mutagen.mp3 import MP3
 from moviepy.editor import *
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
-from consts import TRIMMED_VIDEO_FILE_PATH
+from consts import TRIMMED_VIDEO_FILE_PATH, MERGED_CLIP_FILE_PATH
 
 
 def get_mp4_length(file_path):
@@ -24,4 +24,16 @@ def trim_video(video_file_path: str, start_time: int, end_time: int) -> str:
 
 
 def merge_video(mp4_file_path, mp3_file_path):
-    pass
+    # Load the video file
+    video = VideoFileClip(mp4_file_path)
+
+    # Load the audio file
+    audio = AudioFileClip(mp3_file_path)
+
+    # Set the audio of the video file to the loaded audio file
+    video_with_audio = video.set_audio(audio)
+
+    # Write the merged video with audio to a new file
+    video_with_audio.write_videofile(MERGED_CLIP_FILE_PATH, codec="libx264",
+                                     audio_codec="aac")
+
