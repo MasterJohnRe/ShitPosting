@@ -37,9 +37,12 @@ def get_random_video_from_bank():
         return None
 
 
-def create_video_with_subtitles(aws_adapter, polly_output_audio_file_path):
-    uploaded_file_uri = aws_adapter.upload_file(polly_output_audio_file_path)
-    aws_adapter.transcribe_audio(uploaded_file_uri)
+def create_subtitles_from_mp3(aws_adapter, polly_output_audio_file_path):
+    mp3_file_uri_in_s3 = aws_adapter.upload_file_to_s3(polly_output_audio_file_path, AWS_S3_BUCKET_NAME,
+                                                       AWS_MP3_POLLY_OUTPUT_FILE_ROUTE)
+    srt_file_uri_in_s3 = aws_adapter.transcribe_audio(mp3_file_uri_in_s3, AWS_S3_BUCKET_NAME,
+                                                      AWS_SRT_TRABSCRIBE_OUTPUT_FILE_ROUTE)
+    aws_adapter.download_file_from_s3(srt_file_uri_in_s3, TRANSCRIBE_SRT_FILE_DESTINATION_PATH)
 
 
 def main():
@@ -51,7 +54,7 @@ def main():
     # trimmed_video_file_path = trim_video_by_random_start_point(random_video_file_path, mp3_length)
     # merge_video(trimmed_video_file_path, output_audio_file_path)
     # create_video_with_subtitles(aws_adapter, output_audio_file_path)
-    create_video_with_subtitles(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
+    create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
     # print(trimmed_video_file_path)
 
 

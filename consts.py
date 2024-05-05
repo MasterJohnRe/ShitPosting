@@ -22,10 +22,12 @@ POLLY_AUDIO_OUTPUT_FILE_PATH = "./media/polly_audio_output.mp3"
 # AWS credentials and region
 AWS_ACCESS_KEY_ID = 'AKIAWO5H2OD3OERIK3XM'
 AWS_SECRET_ACCESS_KEY = '3YvZ+2UoFjeFDFOgCEXiXbKYQY0ofs7OsAfdqjFX'
-AWS_REGION = 'us-west-2'  # Change this to your AWS region
+AWS_REGION = 'eu-west-2'  # Change this to your AWS region
 AWS_S3_BUCKET_NAME = "shitposting-audio-files"
 AWS_MP3_POLLY_OUTPUT_FILE_ROUTE = "audio_created_by_polly/polly_output_audio.mp3"
+AWS_SRT_TRABSCRIBE_OUTPUT_FILE_ROUTE = "srt_created_by_transcribe/transcribe_output"
 
 TRIMMED_VIDEO_FILE_PATH = "./media/trimmed_video.mp4"
 BASE_VIDEOS_FOLDER_PATH = r"C:\Users\Amit\Downloads\videos" #TODO: edit this on production
 MERGED_CLIP_FILE_PATH = "./media/merged_clip_without_subtitles.mp4"
+TRANSCRIBE_SRT_FILE_DESTINATION_PATH = "./media/transcribe_subtitles_output.srt"
