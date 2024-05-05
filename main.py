@@ -1,6 +1,7 @@
 from typing import Tuple
 import random
 import math
+import subprocess
 
 from src.adapters.reddit_adapter import RedditAdapter
 from src.adapters.aws_adapter import AWSAdapter
@@ -52,9 +53,11 @@ def main():
     # mp3_length = get_mp3_length(output_audio_file_path)
     # random_video_file_path = get_random_video_from_bank()
     # trimmed_video_file_path = trim_video_by_random_start_point(random_video_file_path, mp3_length)
-    # merge_video(trimmed_video_file_path, output_audio_file_path)
+    # merge_video(trimmed_video_file_path, output_audio_file_path, MERGED_CLIP_FILE_PATH)
     # create_video_with_subtitles(aws_adapter, output_audio_file_path)
     create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
+    apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, TRANSCRIBE_SRT_FILE_DESTINATION_PATH,
+                             VIDEO_WITH_SUBTITLES_FILE_PATH)
     # print(trimmed_video_file_path)
 
 

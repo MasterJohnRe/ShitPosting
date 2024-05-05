@@ -31,3 +31,4 @@ TRIMMED_VIDEO_FILE_PATH = "./media/trimmed_video.mp4"
 BASE_VIDEOS_FOLDER_PATH = r"C:\Users\Amit\Downloads\videos" #TODO: edit this on production
 MERGED_CLIP_FILE_PATH = "./media/merged_clip_without_subtitles.mp4"
 TRANSCRIBE_SRT_FILE_DESTINATION_PATH = "./media/transcribe_subtitles_output.srt"
+VIDEO_WITH_SUBTITLES_FILE_PATH = "./media/video_with_subtitles.mp4"
