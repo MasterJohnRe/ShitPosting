@@ -55,9 +55,13 @@ def main():
     # trimmed_video_file_path = trim_video_by_random_start_point(random_video_file_path, mp3_length)
     # merge_video(trimmed_video_file_path, output_audio_file_path, MERGED_CLIP_FILE_PATH)
     # create_video_with_subtitles(aws_adapter, output_audio_file_path)
-    create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
-    apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, TRANSCRIBE_SRT_FILE_DESTINATION_PATH,
-                             VIDEO_WITH_SUBTITLES_FILE_PATH)
+    mp3_length = 165
+    story_tuple = ("how I met your mother, part me", "test")
+    # create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
+    # apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, TRANSCRIBE_SRT_FILE_DESTINATION_PATH,
+    #                          VIDEO_WITH_SUBTITLES_FILE_PATH)
+    split_video_by_maximum_length(VIDEO_WITH_SUBTITLES_FILE_PATH, mp3_length, MAXIMUM_TIME_PER_VIDEO,
+                                  f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}")
     # print(trimmed_video_file_path)
 
 

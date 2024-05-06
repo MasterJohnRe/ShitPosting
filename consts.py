@@ -17,7 +17,6 @@ KEY_TO_FIND_TOP_STORY_START_OF_TITLE = '>'
 KEY_TO_FIND_TOP_STORY_END_OF_TITLE = '<'
 REMOVE_LAST_UNWANTED_CHARACTER = 1
 
-
 POLLY_AUDIO_OUTPUT_FILE_PATH = "./media/polly_audio_output.mp3"
 # AWS credentials and region
 AWS_ACCESS_KEY_ID = 'AKIAWO5H2OD3OERIK3XM'
@@ -28,7 +27,10 @@ AWS_MP3_POLLY_OUTPUT_FILE_ROUTE = "audio_created_by_polly/polly_output_audio.mp3
 AWS_SRT_TRABSCRIBE_OUTPUT_FILE_ROUTE = "srt_created_by_transcribe/transcribe_output"
 
 TRIMMED_VIDEO_FILE_PATH = "./media/trimmed_video.mp4"
-BASE_VIDEOS_FOLDER_PATH = r"C:\Users\Amit\Downloads\videos" #TODO: edit this on production
+BASE_VIDEOS_FOLDER_PATH = r"C:\Users\Amit\Downloads\videos"  # TODO: edit this on production
 MERGED_CLIP_FILE_PATH = "./media/merged_clip_without_subtitles.mp4"
 TRANSCRIBE_SRT_FILE_DESTINATION_PATH = "./media/transcribe_subtitles_output.srt"
 VIDEO_WITH_SUBTITLES_FILE_PATH = "./media/video_with_subtitles.mp4"
+RESULT_VIDEOS_FOLDER_PATH = "./media/videos_to_upload/"
+MAXIMUM_TIME_PER_VIDEO = 60
+STORY_TITLE_INDEX = 0
