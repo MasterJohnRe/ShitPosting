@@ -1,10 +1,12 @@
 from typing import Tuple
 import random
 import math
-import subprocess
+import os
+from datetime import datetime
 
 from src.adapters.reddit_adapter import RedditAdapter
 from src.adapters.aws_adapter import AWSAdapter
+from src.adapters.google_drive_adapter2 import GoogleDriveAdapter
 from src.util_functions import *
 from consts import *
 
@@ -46,6 +48,21 @@ def create_subtitles_from_mp3(aws_adapter, polly_output_audio_file_path):
     aws_adapter.download_file_from_s3(srt_file_uri_in_s3, TRANSCRIBE_SRT_FILE_DESTINATION_PATH)
 
 
+def upload_result_splitted_videos_to_drive(video_title: str, result_splitted_videos_folder_path: str):
+    # Initialize GoogleDriveAdapter
+    google_drive_adapter = GoogleDriveAdapter()
+    #
+    # # Create a folder and get its ID
+    # current_datetime = datetime.now()
+    # formatted_date = current_datetime.strftime("%d-%m-%Y")
+    # folder_id = google_drive_adapter.create_folder(f"{video_title}-{formatted_date}")
+
+    # Upload a file to the created folder
+    for file_name in os.listdir(result_splitted_videos_folder_path):
+        file_path = result_splitted_videos_folder_path + file_name
+        file_id = google_drive_adapter.upload_file(file_name, file_path)
+
+
 def main():
     aws_adapter = AWSAdapter()
     # story_tuple = get_top_story()
@@ -57,11 +74,12 @@ def main():
     # create_video_with_subtitles(aws_adapter, output_audio_file_path)
     mp3_length = 165
     story_tuple = ("how I met your mother, part me", "test")
-    # create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
-    # apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, TRANSCRIBE_SRT_FILE_DESTINATION_PATH,
-    #                          VIDEO_WITH_SUBTITLES_FILE_PATH)
-    split_video_by_maximum_length(VIDEO_WITH_SUBTITLES_FILE_PATH, mp3_length, MAXIMUM_TIME_PER_VIDEO,
-                                  f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}")
+    create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
+    apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, TRANSCRIBE_SRT_FILE_DESTINATION_PATH,
+                             VIDEO_WITH_SUBTITLES_FILE_PATH)
+    # split_video_by_maximum_length(VIDEO_WITH_SUBTITLES_FILE_PATH, mp3_length, MAXIMUM_TIME_PER_VIDEO,
+    #                              f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}")
+    # upload_result_splitted_videos_to_drive(story_tuple[STORY_TITLE_INDEX], RESULT_VIDEOS_FOLDER_PATH)
     # print(trimmed_video_file_path)
 
 

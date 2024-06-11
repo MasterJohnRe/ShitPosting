@@ -34,3 +34,9 @@ VIDEO_WITH_SUBTITLES_FILE_PATH = "./media/video_with_subtitles.mp4"
 RESULT_VIDEOS_FOLDER_PATH = "./media/videos_to_upload/"
 MAXIMUM_TIME_PER_VIDEO = 60
 STORY_TITLE_INDEX = 0
+
+GOOGLE_DRIVE_JSON_FILE_PATH = "./shitposting-422518-8721746d5f5d.json"
+
+
+#TIKTOK_CONSTS
+TOKEN_URL = 'https://open-api.tiktok.com/oauth/access_token/'
