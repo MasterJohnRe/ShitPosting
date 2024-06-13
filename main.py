@@ -116,6 +116,7 @@ def split_video_by_maximum_length(video_file_path: str, video_legnth: int, maxim
 
 
 def create_video():
+    logger.info("---started creating video task---")
     aws_adapter = AWSAdapter()
     story_tuple = get_top_story()
     output_audio_file_path = create_audio_file_from_text(aws_adapter, story_tuple)
