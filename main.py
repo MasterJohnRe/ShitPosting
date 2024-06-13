@@ -4,10 +4,12 @@ import math
 import logging
 import os
 import re
+import asyncio
 
 from src import log_config
 from src.adapters.reddit_adapter import RedditAdapter
 from src.adapters.aws_adapter import AWSAdapter
+from src.adapters.telegram_adapter import TelegramAdapter
 from src import util_functions
 from consts import *
 
@@ -114,7 +116,7 @@ def get_valid_path(folder_path: str):
 
 
 def split_video_by_maximum_length(video_file_path: str, video_legnth: int, maximum_time_per_video: int,
-                                  target_path: str):
+                                  target_path: str) -> str:
     try:
         target_folder_path = target_path.rsplit('/', 1)[0]
         target_folder_path = get_valid_path(target_folder_path)
@@ -123,12 +125,29 @@ def split_video_by_maximum_length(video_file_path: str, video_legnth: int, maxim
         target_path = get_valid_path(target_path)
         util_functions.split_video_by_maximum_length(video_file_path, video_legnth, maximum_time_per_video, target_path)
         logger.info(f"{SPLITTED_RESULT_VIDEO_SUCCSSFULLY_MESSAGE}. placed in folder: {target_path}")
+        return target_folder_path
     except Exception as e:
         logging.error(
             f"failed splitting video. video_file_path: {video_file_path}, video_length: {video_legnth}, maximum_time_per_video: {maximum_time_per_video}, target_path: {target_path}. with the error: {e}")
 
 
-def create_video():
+async def upload_video_to_telegram(telegram_adapter, video_description: str, video_file_path: str):
+    try:
+        await telegram_adapter.send_video(video_file_path)
+        await telegram_adapter.send_message(video_description)
+        logger.info(UPLOADED_VIDEO_TO_TELEGRAM_SUCCESSFULLY_MESSAGE)
+    except Exception as e:
+        logger.error(f"Failed uploading video to telegram, video_file_path: {video_file_path}, Error: {e}")
+
+
+async def upload_result_videos_to_telegram(result_folder_path: str):
+    telegram_adapter = TelegramAdapter(BOT_TOKEN, CHANNEL_CHAT_ID)
+    for file_name in os.listdir(result_folder_path):
+        file_path = result_folder_path + '/' + file_name
+        await upload_video_to_telegram(telegram_adapter, file_name, file_path)
+
+
+async def create_video():
     logger.info("---started creating video task---")
     aws_adapter = AWSAdapter()
     story_tuple = get_top_story()
@@ -142,16 +161,11 @@ def create_video():
     create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
     apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, TRANSCRIBE_SRT_FILE_DESTINATION_PATH,
                              VIDEO_WITH_SUBTITLES_FILE_PATH)
-    # mp3_length = 64
-    # story_tuple = ("AITA for telling my daughter that life isn’t highschool and if it was she would be the loser now",
-    #                "AITA for telling my daughter that life isn’t highschool and if it was she would be the loser now")
-    split_video_by_maximum_length(VIDEO_WITH_SUBTITLES_FILE_PATH, mp3_length, MAXIMUM_TIME_PER_VIDEO,
-                                  f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}/{story_tuple[STORY_TITLE_INDEX]}")
-
-
-def main():
-    create_video()
+    result_folder_path = split_video_by_maximum_length(VIDEO_WITH_SUBTITLES_FILE_PATH, mp3_length,
+                                                       MAXIMUM_TIME_PER_VIDEO,
+                                                       f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}/{story_tuple[STORY_TITLE_INDEX]}")
+    await upload_result_videos_to_telegram(result_folder_path)
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(create_video())
