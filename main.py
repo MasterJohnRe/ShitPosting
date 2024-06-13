@@ -3,6 +3,7 @@ import random
 import math
 import logging
 import os
+import re
 
 from src import log_config
 from src.adapters.reddit_adapter import RedditAdapter
@@ -103,11 +104,23 @@ def apply_subtitles_on_video(input_video_file_path: str, subtitles_file_path: st
             f"failed applying subtitles: {subtitles_file_path} on video: {input_video_file_path}. result video placed in: {output_video_file_path}. error: {e}")
 
 
+def get_valid_path(folder_path: str):
+    pattern = r'[\\/:*?"<>|]'
+    folder_name = folder_path.rsplit('/', 1)[1]
+    folder_path_without_name = folder_path.rsplit('/', 1)[0]
+    new_folder_name = re.sub(pattern, '', folder_name)
+    new_folder_path = folder_path_without_name + '/' + new_folder_name
+    return new_folder_path
+
+
 def split_video_by_maximum_length(video_file_path: str, video_legnth: int, maximum_time_per_video: int,
                                   target_path: str):
     try:
-        target_folder = target_path.rsplit('/', 1)[0]
-        os.makedirs(target_folder, exist_ok=True)
+        target_folder_path = target_path.rsplit('/', 1)[0]
+        target_folder_path = get_valid_path(target_folder_path)
+        os.makedirs(target_folder_path, exist_ok=True)
+        target_path = target_folder_path + '/' + target_path.rsplit('/', 1)[TARGET_VIDEO_NAME_POSITION]
+        target_path = get_valid_path(target_path)
         util_functions.split_video_by_maximum_length(video_file_path, video_legnth, maximum_time_per_video, target_path)
         logger.info(f"{SPLITTED_RESULT_VIDEO_SUCCSSFULLY_MESSAGE}. placed in folder: {target_path}")
     except Exception as e:

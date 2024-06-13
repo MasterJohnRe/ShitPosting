@@ -34,6 +34,7 @@ VIDEO_WITH_SUBTITLES_FILE_PATH = "./media/video_with_subtitles.mp4"
 RESULT_VIDEOS_FOLDER_PATH = "./media/videos_to_upload/"
 MAXIMUM_TIME_PER_VIDEO = 60
 STORY_TITLE_INDEX = 0
+TARGET_VIDEO_NAME_POSITION = 1
 
 FINISHED_CREATING_AUDIO_FILE_FROM_TEXT_MESSAGE = "finished creating audio file from text"
 TRIMMED_VIDEO_BY_RANDOM_START_POINT_SUCCESSFULLY_MESSAGE = "trimmed video by random start point successfully"
