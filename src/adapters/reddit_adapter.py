@@ -14,6 +14,7 @@ class RedditAdapter:
             KEY_TO_FIND_TOP_STORY_START_OF_TITLE)
         story_title_end_index = http_response_text.find(KEY_TO_FIND_TOP_STORY_END_OF_TITLE)
         top_story_title = http_response_text[story_title_start_index:story_title_end_index]
+        top_story_title = top_story_title.strip()
         return top_story_title
 
     def _get_top_story_body(self, http_response_text: str):
@@ -25,6 +26,7 @@ class RedditAdapter:
         top_story_body_text = http_response_text[story_body_start_index:story_body_end_index].replace('<p>',
                                                                                                       '').replace(
             '</p>', '')
+        top_story_body_text = top_story_body_text.strip()
         return top_story_body_text
 
     def get_top_story(self, subreddit_name: str) -> Tuple[str, str]:

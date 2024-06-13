@@ -6,5 +6,5 @@ def setup_logging():
         filename='./logs/shitposting_logs.log',
         encoding='utf-8',
         format='%(asctime)s %(levelname)s: %(message)s',
-        level=logging.DEBUG
+        level=logging.INFO
     )

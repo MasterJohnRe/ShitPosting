@@ -40,7 +40,7 @@ def create_audio_file_from_text(aws_adapter, story_tuple: Tuple[str, str]):
 
 def get_mp3_length(audio_file_path: str):
     try:
-        util_functions.get_mp3_length(audio_file_path)
+        return util_functions.get_mp3_length(audio_file_path)
     except Exception as e:
         logging.error(f"failed getting mp3 length. error: {e}")
         raise e
@@ -106,6 +106,8 @@ def apply_subtitles_on_video(input_video_file_path: str, subtitles_file_path: st
 def split_video_by_maximum_length(video_file_path: str, video_legnth: int, maximum_time_per_video: int,
                                   target_path: str):
     try:
+        target_folder = target_path.rsplit('/', 1)[0]
+        os.makedirs(target_folder, exist_ok=True)
         util_functions.split_video_by_maximum_length(video_file_path, video_legnth, maximum_time_per_video, target_path)
         logger.info(f"{SPLITTED_RESULT_VIDEO_SUCCSSFULLY_MESSAGE}. placed in folder: {target_path}")
     except Exception as e:
@@ -113,22 +115,28 @@ def split_video_by_maximum_length(video_file_path: str, video_legnth: int, maxim
             f"failed splitting video. video_file_path: {video_file_path}, video_length: {video_legnth}, maximum_time_per_video: {maximum_time_per_video}, target_path: {target_path}. with the error: {e}")
 
 
-def main():
+def create_video():
     aws_adapter = AWSAdapter()
-    # story_tuple = get_top_story()
-    # output_audio_file_path = create_audio_file_from_text(aws_adapter, story_tuple)
-    # random_video_file_path = get_random_video_from_bank()
-    # mp3_length = get_mp3_length(output_audio_file_path)
-    # trimmed_video_file_path = trim_video_by_random_start_point(random_video_file_path, mp3_length)
-    # merge_video(trimmed_video_file_path, output_audio_file_path, MERGED_CLIP_FILE_PATH)
-    mp3_length = 165
-    story_tuple = ("how I met your mother, part me", "test")
-    # create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
-    # apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, TRANSCRIBE_SRT_FILE_DESTINATION_PATH,
-    #                          VIDEO_WITH_SUBTITLES_FILE_PATH)
+    story_tuple = get_top_story()
+    output_audio_file_path = create_audio_file_from_text(aws_adapter, story_tuple)
+    random_video_file_path = get_random_video_from_bank()
+    mp3_length = get_mp3_length(output_audio_file_path)
+    trimmed_video_file_path = trim_video_by_random_start_point(random_video_file_path, mp3_length)
+    merge_video(trimmed_video_file_path, output_audio_file_path, MERGED_CLIP_FILE_PATH)
+    # mp3_length = 165
+    # story_tuple = ("how I met your mother, part me", "test")
+    create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
+    apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, TRANSCRIBE_SRT_FILE_DESTINATION_PATH,
+                             VIDEO_WITH_SUBTITLES_FILE_PATH)
+    # mp3_length = 64
+    # story_tuple = ("AITA for telling my daughter that life isn’t highschool and if it was she would be the loser now",
+    #                "AITA for telling my daughter that life isn’t highschool and if it was she would be the loser now")
     split_video_by_maximum_length(VIDEO_WITH_SUBTITLES_FILE_PATH, mp3_length, MAXIMUM_TIME_PER_VIDEO,
-                                  f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}")
-    # print(trimmed_video_file_path)
+                                  f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}/{story_tuple[STORY_TITLE_INDEX]}")
+
+
+def main():
+    create_video()
 
 
 if __name__ == "__main__":

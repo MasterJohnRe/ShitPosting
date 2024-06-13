@@ -41,7 +41,8 @@ def merge_video(mp4_file_path: str, mp3_file_path: str, destination_file_path: s
 
 def apply_subtitles_on_video(input_video_file_path: str, subtitles_file_path: str, output_video_file_path: str):
     subprocess.run(
-        ['ffmpeg', '-i', input_video_file_path, '-vf', f'subtitles={subtitles_file_path}', output_video_file_path])
+        ['ffmpeg', '-y', '-i', input_video_file_path, '-vf', f'subtitles={subtitles_file_path}',
+         output_video_file_path])
 
 
 def split_video_by_maximum_length(video_file_path: str, video_legnth: int, maximum_time_per_video: int,
@@ -54,11 +55,11 @@ def split_video_by_maximum_length(video_file_path: str, video_legnth: int, maxim
     for i in range(number_of_pieces):
         if i == 0:
             start_time = 0
-            command = f"ffmpeg -i {video_file_path} -ss {str(start_time)}  -t  {str(time_for_each_video)} " + '"' + f"{target_path}-{str(i)}.mp4" + '"'
+            command = f"ffmpeg -y -i {video_file_path} -ss {str(start_time)}  -t  {str(time_for_each_video)} " + '"' + f"{target_path}-{str(i)}.mp4" + '"'
             os.system(command)
         else:
             start_time = (i * time_for_each_video) - 1  # let the video start before the last video ended
-            command = f"ffmpeg -i {video_file_path} -ss {str(start_time)}  -t  {str(time_for_each_video + 1)} " + '"' + f"{target_path}-{str(i)}.mp4" + '"'
+            command = f"ffmpeg -y -i {video_file_path} -ss {str(start_time)}  -t  {str(time_for_each_video + 1)} " + '"' + f"{target_path}-{str(i)}.mp4" + '"'
             os.system(command)
         # end_time = (i * time_for_each_video) + time_for_each_video
         # ffmpeg_extract_subclip(video_file_path, start_time, end_time, targetname=f"{target_path}-{str(i)}.mp4")
