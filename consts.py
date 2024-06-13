@@ -36,4 +36,7 @@ MAXIMUM_TIME_PER_VIDEO = 60
 STORY_TITLE_INDEX = 0
 
 #TIKTOK_CONSTS
-TOKEN_URL = 'https://open-api.tiktok.com/oauth/access_token/'
+TIKTOK_DEVELOPER_CLIENT_KEY = 'awyxlocxjl9lnkzn'
+TIKTOK_DEVELOPER_CLIENT_SECRET = 'kMII969YQorqsgUf3tBTBBCY4mmC4EQl'
+TIKTOK_USER_REFRESH_TOKEN =
+TIKTOK_REFRESH_TOKEN_URL = 'https://open-api.tiktok.com/oauth/access_token/'

@@ -1,7 +1,7 @@
 import requests
 from requests_oauthlib import OAuth2Session
 
-from consts import TOKEN_URL
+from consts import TIKTOK_REFRESH_TOKEN_URL
 
 
 class TiktokAdapter:
@@ -11,12 +11,12 @@ class TiktokAdapter:
         self.access_token = access_token
         self.refresh_token = refresh_token
 
-    def upload_video(self, access_token, video_path, description):
+    def upload_video(self, video_path, description):
         if not self.check_access_token_validity():
             self.refresh_access_token()
 
         headers = {
-            'Authorization': f'Bearer {access_token}'
+            'Authorization': f'Bearer {self.access_token}'
         }
         files = {
             'video': open(video_path, 'rb'),
@@ -35,7 +35,7 @@ class TiktokAdapter:
             'token_type': 'Bearer',
             'expires_in': -30  # Expired token
         })
-        new_token = oauth.refresh_token(TOKEN_URL, **extra)
+        new_token = oauth.refresh_token(TIKTOK_REFRESH_TOKEN_URL, **extra)
         self.access_token = new_token
 
     def check_access_token_validity(self):

@@ -1,10 +1,10 @@
 from typing import Tuple
 import random
 import math
-import subprocess
 
 from src.adapters.reddit_adapter import RedditAdapter
 from src.adapters.aws_adapter import AWSAdapter
+from src.adapters.tiktok_adapter import TiktokAdapter
 from src.util_functions import *
 from consts import *
 
@@ -47,7 +47,7 @@ def create_subtitles_from_mp3(aws_adapter, polly_output_audio_file_path):
 
 
 def main():
-    aws_adapter = AWSAdapter()
+    # aws_adapter = AWSAdapter()
     # story_tuple = get_top_story()
     # output_audio_file_path = create_audio_file_from_text(aws_adapter, story_tuple)
     # mp3_length = get_mp3_length(output_audio_file_path)
@@ -55,14 +55,21 @@ def main():
     # trimmed_video_file_path = trim_video_by_random_start_point(random_video_file_path, mp3_length)
     # merge_video(trimmed_video_file_path, output_audio_file_path, MERGED_CLIP_FILE_PATH)
     # create_video_with_subtitles(aws_adapter, output_audio_file_path)
-    mp3_length = 165
-    story_tuple = ("how I met your mother, part me", "test")
+    # mp3_length = 165
+    # story_tuple = ("how I met your mother, part me", "test")
     # create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
+
     # apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, TRANSCRIBE_SRT_FILE_DESTINATION_PATH,
     #                          VIDEO_WITH_SUBTITLES_FILE_PATH)
-    split_video_by_maximum_length(VIDEO_WITH_SUBTITLES_FILE_PATH, mp3_length, MAXIMUM_TIME_PER_VIDEO,
-                                  f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}")
-    # print(trimmed_video_file_path)
+
+    # split_video_by_maximum_length(VIDEO_WITH_SUBTITLES_FILE_PATH, mp3_length, MAXIMUM_TIME_PER_VIDEO,
+    #                             f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}")
+    tiktok_adapter = TiktokAdapter(TIKTOK_DEVELOPER_CLIENT_KEY, TIKTOK_DEVELOPER_CLIENT_SECRET,
+                                   TIKTOK_USER_REFRESH_TOKEN)
+    response = tiktok_adapter.upload_video(
+        "D:\\git\\ShitPosting\\media\\videos_to_upload\\how I met your mother, part me-0.mp4",
+        r"how I met your mother, part me-0.mp4")
+    print(response)
 
 
 if __name__ == "__main__":
