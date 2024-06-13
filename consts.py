@@ -34,3 +34,10 @@ VIDEO_WITH_SUBTITLES_FILE_PATH = "./media/video_with_subtitles.mp4"
 RESULT_VIDEOS_FOLDER_PATH = "./media/videos_to_upload/"
 MAXIMUM_TIME_PER_VIDEO = 60
 STORY_TITLE_INDEX = 0
+
+FINISHED_CREATING_AUDIO_FILE_FROM_TEXT_MESSAGE = "finished creating audio file from text"
+TRIMMED_VIDEO_BY_RANDOM_START_POINT_SUCCESSFULLY_MESSAGE = "trimmed video by random start point successfully"
+GOT_RANDOM_VIDEO_SUCCESSFULY_MESSAGE = "get_random_video_from_bank finished successfully"
+FAILED_GETTING_RANDOM_VIDEO_MESSAGE = "get_random_video_from_bank failed"
+CREATED_SRT_FILE_SUCCESSFULLY_MESSAGE = "created srt file from mp3"
+SPLITTED_RESULT_VIDEO_SUCCSSFULLY_MESSAGE = "splitted result video successfully"

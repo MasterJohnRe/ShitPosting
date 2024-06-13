@@ -1,6 +1,7 @@
 import boto3
 from urllib.parse import urlparse
 from consts import POLLY_AUDIO_OUTPUT_FILE_PATH, AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+from src.exceptions import DownloadFileFromS3Error
 
 
 class AWSAdapter:
@@ -61,25 +62,19 @@ class AWSAdapter:
         s3_client = boto3.client('s3')
         try:
             s3_client.upload_file(file_path, aws_s3_bucket_name, aws_s3_destination_key)
-            print(
-                f"File uploaded successfully to S3 bucket '{aws_s3_bucket_name}' with key '{aws_s3_destination_key}'")
             uploaded_file_uri = f"s3://{aws_s3_bucket_name}/{aws_s3_destination_key}"
             return uploaded_file_uri
         except Exception as e:
-            print(f"Error uploading file to S3: {e}")
+            raise e
 
     def download_file_from_s3(self, file_uri: str, destination_local_path: str):
         s3 = boto3.client('s3')
         parsed_uri = urlparse(file_uri)
         if parsed_uri.scheme != 's3':
-            print("Invalid URI scheme. Only 's3' scheme is supported.")
-            return
-
+            raise DownloadFileFromS3Error("Invalid URI scheme. Only 's3' scheme is supported.")
         bucket_name = parsed_uri.netloc
         key = parsed_uri.path.lstrip('/')
-
         try:
             s3.download_file(bucket_name, key, destination_local_path)
-            print(f"File downloaded successfully to: {destination_local_path}")
         except Exception as e:
-            print(f"Error downloading file: {e}")
+            raise e
