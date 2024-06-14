@@ -133,8 +133,8 @@ def split_video_by_maximum_length(video_file_path: str, video_legnth: int, maxim
 
 async def upload_video_to_telegram(telegram_adapter, video_description: str, video_file_path: str):
     try:
-        await telegram_adapter.send_video(video_file_path)
         await telegram_adapter.send_message(video_description)
+        await telegram_adapter.send_video(video_file_path)
         logger.info(UPLOADED_VIDEO_TO_TELEGRAM_SUCCESSFULLY_MESSAGE)
     except Exception as e:
         logger.error(f"Failed uploading video to telegram, video_file_path: {video_file_path}, Error: {e}")
