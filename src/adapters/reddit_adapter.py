@@ -1,3 +1,5 @@
+import html
+
 import requests
 
 from consts import *
@@ -29,11 +31,22 @@ class RedditAdapter:
         top_story_body_text = top_story_body_text.strip()
         return top_story_body_text
 
+    def _format_story_by_common_errors(self, text: str) -> str:
+        text = text.replace("aita", "am i the asshole")
+        return text
+
     def get_top_story(self, subreddit_name: str) -> Tuple[str, str]:
         subreddit_url = f"https://www.reddit.com:443/r/{subreddit_name}/top/"
         response = requests.get(subreddit_url, headers=GET_TOP_STORY_GENERIC_HEADERS,
                                 cookies=GET_TOP_STORY_GENERIC_COOKIES)
+
         response_text = response.text
+
+        # decode html entities
+        response_text = html.unescape(response_text)
+
+        response_text = self._format_story_by_common_errors(response_text)
+
         top_story_title = self._get_top_story_title(response_text)
         top_story_body = self._get_top_story_body(response_text)
         return (top_story_title, top_story_body)
