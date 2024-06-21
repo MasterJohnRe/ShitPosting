@@ -88,7 +88,10 @@ def create_subtitles_from_mp3(aws_adapter, polly_output_audio_file_path):
                                                            AWS_MP3_POLLY_OUTPUT_FILE_ROUTE)
         srt_file_uri_in_s3 = aws_adapter.transcribe_audio(mp3_file_uri_in_s3, AWS_S3_BUCKET_NAME,
                                                           AWS_SRT_TRABSCRIBE_OUTPUT_FILE_ROUTE)
-        aws_adapter.download_file_from_s3(srt_file_uri_in_s3, TRANSCRIBE_SRT_FILE_DESTINATION_PATH)
+        transcribe_created_srt_local_file_path = aws_adapter.download_file_from_s3(srt_file_uri_in_s3,
+                                                                                   TRANSCRIBE_SRT_FILE_DESTINATION_PATH)
+        util_functions.split_srt_to_one_word_per_line(transcribe_created_srt_local_file_path,
+                                                      FIXED_SRT_FILE_DESTINATION_PATH)
         logger.info(CREATED_SRT_FILE_SUCCESSFULLY_MESSAGE)
     except Exception as e:
         logger.error(
@@ -159,7 +162,7 @@ async def create_video():
     # mp3_length = 165
     # story_tuple = ("how I met your mother, part me", "test")
     create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
-    apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, TRANSCRIBE_SRT_FILE_DESTINATION_PATH,
+    apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, FIXED_SRT_FILE_DESTINATION_PATH,
                              VIDEO_WITH_SUBTITLES_FILE_PATH)
     result_folder_path = split_video_by_maximum_length(VIDEO_WITH_SUBTITLES_FILE_PATH, mp3_length,
                                                        MAXIMUM_TIME_PER_VIDEO,

@@ -67,7 +67,7 @@ class AWSAdapter:
         except Exception as e:
             raise e
 
-    def download_file_from_s3(self, file_uri: str, destination_local_path: str):
+    def download_file_from_s3(self, file_uri: str, destination_local_path: str) -> str:
         s3 = boto3.client('s3')
         parsed_uri = urlparse(file_uri)
         if parsed_uri.scheme != 's3':
@@ -76,5 +76,6 @@ class AWSAdapter:
         key = parsed_uri.path.lstrip('/')
         try:
             s3.download_file(bucket_name, key, destination_local_path)
+            return destination_local_path
         except Exception as e:
             raise e

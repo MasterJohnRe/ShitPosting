@@ -3,6 +3,7 @@ import subprocess
 from mutagen.mp3 import MP3
 from moviepy.editor import *
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+import pysrt
 
 from consts import TRIMMED_VIDEO_FILE_PATH
 
@@ -39,9 +40,38 @@ def merge_video(mp4_file_path: str, mp3_file_path: str, destination_file_path: s
                                      audio_codec="aac")
 
 
+def split_srt_to_one_word_per_line(input_srt_path: str, output_srt_path: str):
+    # Load the original SRT file
+    subs = pysrt.open(input_srt_path)
+
+    new_subs = pysrt.SubRipFile()
+
+    for sub in subs:
+        words = sub.text.split()
+        word_count = len(words)
+        if word_count > 1:
+            # Calculate the duration each word should be displayed
+            start_time = sub.start.ordinal
+            end_time = sub.end.ordinal
+            total_duration = end_time - start_time
+            word_duration = total_duration // word_count
+
+            for i, word in enumerate(words):
+                start = pysrt.SubRipTime(milliseconds=start_time + i * word_duration)
+                end = pysrt.SubRipTime(
+                    milliseconds=start_time + (i + 1) * word_duration if i < word_count - 1 else end_time)
+                new_subs.append(pysrt.SubRipItem(index=len(new_subs) + 1, start=start, end=end, text=word))
+        else:
+            new_subs.append(sub)
+
+    # Save the new SRT file
+    new_subs.save(output_srt_path, encoding='utf-8')
+
+
 def apply_subtitles_on_video(input_video_file_path: str, subtitles_file_path: str, output_video_file_path: str):
     subprocess.run(
-        ['ffmpeg', '-y', '-i', input_video_file_path, '-vf', f'subtitles={subtitles_file_path}',
+        ['ffmpeg', '-y', '-i', input_video_file_path, '-vf',
+         f"subtitles={subtitles_file_path}:force_style='Alignment=10'",
          output_video_file_path])
 
 

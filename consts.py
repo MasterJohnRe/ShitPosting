@@ -27,9 +27,10 @@ AWS_MP3_POLLY_OUTPUT_FILE_ROUTE = "audio_created_by_polly/polly_output_audio.mp3
 AWS_SRT_TRABSCRIBE_OUTPUT_FILE_ROUTE = "srt_created_by_transcribe/transcribe_output"
 
 TRIMMED_VIDEO_FILE_PATH = "./media/trimmed_video.mp4"
-BASE_VIDEOS_FOLDER_PATH = r"C:\Users\Amit\Downloads\videos"  # TODO: edit this on production
+BASE_VIDEOS_FOLDER_PATH = r"C:/Users/Amit/Videos/videos_reels_format"  # TODO: edit this on production
 MERGED_CLIP_FILE_PATH = "./media/merged_clip_without_subtitles.mp4"
 TRANSCRIBE_SRT_FILE_DESTINATION_PATH = "./media/transcribe_subtitles_output.srt"
+FIXED_SRT_FILE_DESTINATION_PATH = "./media/fixed_subtitles.srt"
 VIDEO_WITH_SUBTITLES_FILE_PATH = "./media/video_with_subtitles.mp4"
 RESULT_VIDEOS_FOLDER_PATH = "./media/videos_to_upload/"
 MAXIMUM_TIME_PER_VIDEO = 60
