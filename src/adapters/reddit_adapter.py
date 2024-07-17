@@ -32,7 +32,7 @@ class RedditAdapter:
         return top_story_body_text
 
     def _format_story_by_common_errors(self, text: str) -> str:
-        text = text.replace("aita", "am i the asshole")
+        # text = text.replace("aita", "am i the asshole")
         return text
 
     def get_top_story(self, subreddit_name: str) -> Tuple[str, str]:
@@ -43,7 +43,7 @@ class RedditAdapter:
         response_text = response.text
 
         # decode html entities
-        response_text = html.unescape(response_text)
+        response_text = html.unescape(response_text).lower()
 
         response_text = self._format_story_by_common_errors(response_text)
 
