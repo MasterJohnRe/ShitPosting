@@ -30,7 +30,7 @@ jobs:
         run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Download MP4 files from S3
-        run: aws s3 sync s3://your-bucket-name/path/to/mp4_files ./mp4_files
+        run: aws s3 sync s3://shitposting-audio-files/random_background_mp4_files/ ./mp4_files
 
       - name: Install dependencies
         run: |
