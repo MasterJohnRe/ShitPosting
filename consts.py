@@ -19,8 +19,8 @@ REMOVE_LAST_UNWANTED_CHARACTER = 1
 
 POLLY_AUDIO_OUTPUT_FILE_PATH = "./media/polly_audio_output.mp3"
 # AWS credentials and region
-AWS_ACCESS_KEY_ID = 'AKIAWO5H2OD3OERIK3XM'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = ${{ secrets.AWS_ACCESS_KEY_ID }}
+AWS_SECRET_ACCESS_KEY = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 AWS_REGION = 'eu-west-2'  # Change this to your AWS region
 AWS_S3_BUCKET_NAME = "shitposting-audio-files"
 AWS_MP3_POLLY_OUTPUT_FILE_ROUTE = "audio_created_by_polly/polly_output_audio.mp3"

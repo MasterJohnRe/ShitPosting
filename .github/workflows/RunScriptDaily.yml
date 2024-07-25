@@ -2,7 +2,7 @@ name: Run Python Script Daily
 
 on:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -10,31 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-    - name: Install ffmpeg
-      run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-    - name: Install AWS CLI
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y awscli
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
 
-    - name: Configure AWS
-      run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Configure AWS
+        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-    - name: Download MP4 files from S3
-      run: aws s3 sync s3://your-bucket-name/path/to/mp4_files ./mp4_files
+      - name: Download MP4 files from S3
+        run: aws s3 sync s3://shitposting-audio-files/random_background_mp4_files/ ./mp4_files
 
-    - name: Install dependencies
-      run: |
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Run script
-      run: python main.py
+      - name: Run script
+        run: python main.py
