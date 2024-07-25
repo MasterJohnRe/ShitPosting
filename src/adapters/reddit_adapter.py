@@ -12,9 +12,9 @@ class RedditAdapter:
         index = http_response_text.find(KEY_TO_FIND_TOP_STORY_TITLE_HTML_TAG) + len(
             KEY_TO_FIND_TOP_STORY_TITLE_HTML_TAG)
         http_response_text = http_response_text[index:]
-        story_title_start_index = http_response_text.find(KEY_TO_FIND_TOP_STORY_START_OF_TITLE) + len(
+        story_title_start_index = http_response_text.index(KEY_TO_FIND_TOP_STORY_START_OF_TITLE, 1) + len(
             KEY_TO_FIND_TOP_STORY_START_OF_TITLE)
-        story_title_end_index = http_response_text.find(KEY_TO_FIND_TOP_STORY_END_OF_TITLE)
+        story_title_end_index = http_response_text.index(KEY_TO_FIND_TOP_STORY_END_OF_TITLE, 2)
         top_story_title = http_response_text[story_title_start_index:story_title_end_index]
         top_story_title = top_story_title.strip()
         return top_story_title

@@ -5,6 +5,7 @@ import logging
 import os
 import re
 import asyncio
+import shutil
 
 from src import log_config
 from src.adapters.reddit_adapter import RedditAdapter
@@ -118,7 +119,7 @@ def get_valid_path(folder_path: str):
     return new_folder_path
 
 
-def split_video_by_maximum_length(video_file_path: str, video_legnth: int, maximum_time_per_video: int,
+def split_video_by_maximum_length(video_file_path: str, video_length: int, maximum_time_per_video: int,
                                   target_path: str) -> str:
     try:
         target_folder_path = target_path.rsplit('/', 1)[0]
@@ -126,12 +127,27 @@ def split_video_by_maximum_length(video_file_path: str, video_legnth: int, maxim
         os.makedirs(target_folder_path, exist_ok=True)
         target_path = target_folder_path + '/' + target_path.rsplit('/', 1)[TARGET_VIDEO_NAME_POSITION]
         target_path = get_valid_path(target_path)
-        util_functions.split_video_by_maximum_length(video_file_path, video_legnth, maximum_time_per_video, target_path)
+        util_functions.split_video_by_maximum_length(video_file_path, video_length, maximum_time_per_video, target_path)
         logger.info(f"{SPLITTED_RESULT_VIDEO_SUCCSSFULLY_MESSAGE}. placed in folder: {target_path}")
         return target_folder_path
     except Exception as e:
         logging.error(
-            f"failed splitting video. video_file_path: {video_file_path}, video_length: {video_legnth}, maximum_time_per_video: {maximum_time_per_video}, target_path: {target_path}. with the error: {e}")
+            f"failed splitting video. video_file_path: {video_file_path}, video_length: {video_length}, maximum_time_per_video: {maximum_time_per_video}, target_path: {target_path}. with the error: {e}")
+
+
+def copy_result_video_to_destination_folder(file_path, target_path):
+    try:
+        target_folder_path = target_path.rsplit('/', 1)[0]
+        target_folder_path = get_valid_path(target_folder_path)
+        os.makedirs(target_folder_path, exist_ok=True)
+        target_path = target_folder_path + '/' + target_path.rsplit('/', 1)[TARGET_VIDEO_NAME_POSITION] + ".mp4"
+        target_path = get_valid_path(target_path)
+        shutil.move(file_path, target_path)
+        logger.info(f"{COPIED_RESULT_VIDEO_TO_RESULT_FOLDER_SUCCESSFULLY_MESSAGE}. placed in folder: {target_path}")
+        return target_folder_path
+    except Exception as e:
+        logging.error(
+            f"failed copying video to destination folder. video_file_path: {file_path}, target_path: {target_path}. with the error: {e}")
 
 
 async def upload_video_to_telegram(telegram_adapter, video_description: str, video_file_path: str):
@@ -159,14 +175,15 @@ async def create_video():
     mp3_length = get_mp3_length(output_audio_file_path)
     trimmed_video_file_path = trim_video_by_random_start_point(random_video_file_path, mp3_length)
     merge_video(trimmed_video_file_path, output_audio_file_path, MERGED_CLIP_FILE_PATH)
-    # mp3_length = 165
-    # story_tuple = ("how I met your mother, part me", "test")
-    create_subtitles_from_mp3(aws_adapter, "D:\git\ShitPosting\media\polly_audio_output.mp3")
+    create_subtitles_from_mp3(aws_adapter, output_audio_file_path)
     apply_subtitles_on_video(MERGED_CLIP_FILE_PATH, FIXED_SRT_FILE_DESTINATION_PATH,
                              VIDEO_WITH_SUBTITLES_FILE_PATH)
-    result_folder_path = split_video_by_maximum_length(VIDEO_WITH_SUBTITLES_FILE_PATH, mp3_length,
-                                                       MAXIMUM_TIME_PER_VIDEO,
-                                                       f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}/{story_tuple[STORY_TITLE_INDEX]}")
+    # result_folder_path = split_video_by_maximum_length(VIDEO_WITH_SUBTITLES_FILE_PATH, mp3_length,
+    #                                                    MAXIMUM_TIME_PER_VIDEO,
+    #                                                    f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}/{story_tuple[STORY_TITLE_INDEX]}")
+    result_folder_path = copy_result_video_to_destination_folder(VIDEO_WITH_SUBTITLES_FILE_PATH,
+                                                                 f"{RESULT_VIDEOS_FOLDER_PATH}{story_tuple[STORY_TITLE_INDEX]}/{story_tuple[STORY_TITLE_INDEX]}")
+
     await upload_result_videos_to_telegram(result_folder_path)
 
 

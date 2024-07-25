@@ -12,9 +12,9 @@ GET_TOP_STORY_GENERIC_HEADERS = {"Sec-Ch-Ua": "\"Chromium\";v=\"123\", \"Not:A-B
 KEY_TO_FIND_TOP_STORY_BODY_HTML_TAG = 'data-post-click-location="text-body"'
 KEY_TO_FIND_TOP_STORY_START_OF_BODY = '<p>'
 KEY_TO_FIND_TOP_STORY_END_OF_BODY = '</div>'
-KEY_TO_FIND_TOP_STORY_TITLE_HTML_TAG = f'slot="title"'
-KEY_TO_FIND_TOP_STORY_START_OF_TITLE = '>'
-KEY_TO_FIND_TOP_STORY_END_OF_TITLE = '<'
+KEY_TO_FIND_TOP_STORY_TITLE_HTML_TAG = f'post-title'
+KEY_TO_FIND_TOP_STORY_START_OF_TITLE = '"'
+KEY_TO_FIND_TOP_STORY_END_OF_TITLE = '"'
 REMOVE_LAST_UNWANTED_CHARACTER = 1
 
 POLLY_AUDIO_OUTPUT_FILE_PATH = "./media/polly_audio_output.mp3"
@@ -27,7 +27,7 @@ AWS_MP3_POLLY_OUTPUT_FILE_ROUTE = "audio_created_by_polly/polly_output_audio.mp3
 AWS_SRT_TRABSCRIBE_OUTPUT_FILE_ROUTE = "srt_created_by_transcribe/transcribe_output"
 
 TRIMMED_VIDEO_FILE_PATH = "./media/trimmed_video.mp4"
-BASE_VIDEOS_FOLDER_PATH = r"C:/Users/Amit/Videos/videos_reels_format"  # TODO: edit this on production
+BASE_VIDEOS_FOLDER_PATH = "./media/random_background_videos"
 MERGED_CLIP_FILE_PATH = "./media/merged_clip_without_subtitles.mp4"
 TRANSCRIBE_SRT_FILE_DESTINATION_PATH = "./media/transcribe_subtitles_output.srt"
 FIXED_SRT_FILE_DESTINATION_PATH = "./media/fixed_subtitles.srt"
@@ -43,6 +43,7 @@ GOT_RANDOM_VIDEO_SUCCESSFULY_MESSAGE = "get_random_video_from_bank finished succ
 FAILED_GETTING_RANDOM_VIDEO_MESSAGE = "get_random_video_from_bank failed"
 CREATED_SRT_FILE_SUCCESSFULLY_MESSAGE = "created srt file from mp3"
 SPLITTED_RESULT_VIDEO_SUCCSSFULLY_MESSAGE = "splitted result video successfully"
+COPIED_RESULT_VIDEO_TO_RESULT_FOLDER_SUCCESSFULLY_MESSAGE = "copied video_with_subtitles successfully"
 UPLOADED_VIDEO_TO_TELEGRAM_SUCCESSFULLY_MESSAGE = "uploaded video to telegram successfully"
 
 # TELEGRAM consts:
