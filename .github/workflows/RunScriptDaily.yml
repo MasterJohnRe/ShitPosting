@@ -38,7 +38,7 @@ jobs:
     - name: Download MP4 files from S3
       run: |
         mkdir -p mp4_files
-        aws s3 sync s3://your-bucket-name/path/to/mp4_files ./mp4_files
+        aws s3 sync s3://your-bucket-name/path/to/mp4_files ./mp4_files --debug
 
     - name: Install dependencies
       run: |
